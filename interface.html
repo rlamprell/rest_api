@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+
+  <head>
+    <!--Tab text-->
+    <title>Rob Lamprell - Interface</title>
+
+    <!--meta data-->
+    <meta charset="UTF-8">
+
+    <meta name="author"         content="Rob Lamprell">
+    <meta name="description"    content="Interface for assignment 4">
+    <meta name="keywords"       content="HTML, CSS, Javascript, PHP, PDO, MySQL, AJAX, REST">
+
+    <!--The following meta tag was found on the h3nk below, to fix any @media queries in the style sheet-->
+    <meta name="viewport"       content="width=device-width, initial-scale=1"/>
+
+    <!--General Style Sheet-->
+    <link rel="stylesheet" type="text/css" href="style_assignment_4.css">
+
+    <!--Javascript-->
+    <script src ="interface.js" type="text/javascript"></script>
+  </head>
+
+  <!--WebPage-->
+  <body>
+    <!--Header-->
+    <header>
+      <h1>REST API - AJAX Interface</h1>
+    </header>
+
+    <!--Main-->
+    <main>
+
+
+      <!--Resources Available-->
+      <section names="resources">
+        <h1>Available Resources and Requests:</h1>
+        <p>
+          This web service supports methods GET, POST, PUT, DELETE, PATCH.
+          It has been designed to only process five specific requests,
+          which will be defined in the "Examples" section below.
+        </p>
+
+        <!--h3st and Tables of Example Requests-->
+        <h2>Examples</h2>
+        <p>Below are examples of the requests you are able to use.  Note that the default
+           setup for this webservice has teams with ids {1, 2, 3} and players
+           with ids {1, 2, ..., 8, 9}.  Three players have been assigned evenly 
+           across the three teams (in order) - i.e. players 4, 5 and 6 are assigned
+           to team 2.
+        </p>
+         <!--<ul>-->
+          <!--Example 1-->
+          <h3>Retrieve information on all the teams (sorted by team name):</h3>
+            <table>
+              <tr>
+                <td>Method</td>
+                <td>GET</td>
+              </tr>
+              <tr>
+                <td>Resource</td>
+                <td>/teams</td>
+              </tr>
+              <tr>
+                <td>Request Body</td>
+                <td></td>
+              </tr>
+            </table>
+          <!--Example 2-->
+          <h3>Retrieve information on all players of a specific team:</h3>
+          <table>
+            <tr>
+              <td>Method</td>
+              <td>GET</td>
+            </tr>
+            <tr>
+              <td>Resource</td>
+              <td>/teams/2/players</td>
+            </tr>
+            <tr>
+              <td>Request Body</td>
+              <td></td>
+            </tr>
+          </table>
+
+          <!--Example 3-->
+          <h3>Retrieve information on an existing player of a team:</h3>
+          <table>
+            <tr>
+              <td>Method</td>
+              <td>GET</td>
+            </tr>
+            <tr>
+              <td>Resource</td>
+              <td>/teams/3/players/7</td>
+            </tr>
+            <tr>
+              <td>Request Body</td>
+              <td></td>
+            </tr>
+          </table>
+
+          <!--Example 3-->
+          <h3>Add a player / team member to an existing team</h3>
+          <table>
+            <tr>
+              <td>Method</td>
+              <td>POST</td>
+            </tr>
+            <tr>
+              <td>Resource</td>
+              <td>/teams/1/players</td>
+            </tr>
+            <tr>
+              <td>Request Body</td>
+              <td>{"surname": "Jared","forenames": "Sybil","nationality": 
+                  "UK","date_of_birth": "2001-09-24"}</td>
+            </tr>
+          </table>
+
+          <!--Example 4-->
+          <h3>Delete an existing player / team member from a team:</h3>
+          <table>
+            <tr>
+              <td>Method</td>
+              <td>DELETE</td>
+            </tr>
+            <tr>
+              <td>Resource</td>
+              <td>/teams/1/players/1</td>
+            </tr>
+            <tr>
+              <td>Request Body</td>
+              <td></td>
+            </tr>
+          </table>
+
+          <!--Example 5-->
+          <h3>Update information for an existing player / team member of a team:</h3>
+          <table>
+            <tr>
+              <td>Method</td>
+              <td>PATCH</td>
+            </tr>
+            <tr>
+              <td>Resource</td>
+              <td>/teams/1/players/2</td>
+            </tr>
+            <tr>
+              <td>Request Body</td>
+              <td>{"surname": "Jones","forenames": "Sam"}</td>
+            </tr>
+          </table>
+
+          <!--Example 6 (bonus)-->
+          <h3>Update or Create a player depending on if the player already exists:</h3>
+            <table>
+              <tr>
+                <td>Method</td>
+                <td>PUT</td>
+              </tr>
+              <tr>
+                <td>Resource</td>
+                <td>/teams/3/players/15</td>
+              </tr>
+              <tr>
+                <td>Request Body</td>
+                <td>{"surname": "Smith","forenames": "Jess","nationality": 
+                    "UK","date_of_birth": "2002-01-20"}</td>
+              </tr>
+            </table>
+        <p>If the player does not exists, this will act as a POST.
+           If the player does exist, it will act as a PATCH.
+        </p>
+      </section>
+
+
+      <!--Input Form-->
+      <section name="interface">
+        <h1>Interface</h1>
+
+          <!--User input-->
+          <form method="POST">
+              <!--HTTP Method-->
+              <label name="methodLabel">HTTP Method:</label>
+              <select type="text" id="method">
+                <option value='GET'>GET</option>
+                <option value='POST'>POST</option>
+                <option value='DELETE'>DELETE</option>
+                <option value='PUT'>PUT</option>
+                <option value='PATCH'>PATCH</option>
+              </select> 
+
+              <!--Resource-->
+              <label name="resourceLabel">Resource:</label>
+              <input name="resource" id="resource" size="80" maxlength="80">
+
+              <!--Request Body-->
+              <label name="requestLabel">Request Body:</label>
+              <textarea id="request" cols="78" rows="4" ></textarea>
+
+              <!--Process selection-->
+              <button type="button" name="Submit" id="submit" onclick="buildHTTPRequest()">Submit</button>
+              <button type="button" name="clear" id="clear" onclick="clearResponseInfo()">Clear Response</button>
+            </form>
+      </section>
+
+      <!--Status Code-->
+      <section>
+        <h1 id=Request>Request:</h1>
+        <p id="thisRequest"></p>
+        <p id="thisHost"></p>
+        <p id="reqContent"></p>
+        <p id="reqString"></p>
+      </section>
+
+      <!--HTTP Response Body-->
+      <section>
+        <h1 id="response">Response:</h1>
+        <p id="httpStatus"></p>
+        <p id="contentType"></p>
+        <pre id="responseBody"></pre>
+        <p id="responseLocation"></p>
+      </section>
+
+    </main>
+
+  </body>
+</html>
